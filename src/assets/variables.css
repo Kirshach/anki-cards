@@ -1,3 +1,15 @@
 :root {
-  --text-input-border-color: oklch(68% 0.11 73);
+  /* Colors */
+  --theme-color-1: oklch(63.05% 0.167 241.03);
+  --theme-color-2: oklch(42.05% 0.167 241.03);
+  --theme-color-3: oklch(23.05% 0.127 241.03);
+
+  --text-color: oklch(100% 0 0);
+
+  /* Viewports */
+  --mobile: 320px;
+  --tablet: 768px;
+  --desktop: 1024px;
+
+  /* Form Elements */
 }
