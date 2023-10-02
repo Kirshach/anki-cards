@@ -1,9 +1,59 @@
 <script setup lang="ts">
-import TextInput from '@/shared/text-input';
+import { ref } from "vue";
+import TextInput from "@/shared/text-input";
+
+const email = ref("");
+const username = ref("");
+const password = ref("");
+const repeatedPassword = ref("");
 </script>
 
 <template>
-  <main>
-    <TextInput />
-  </main>
+  <form
+    @submit.prevent="
+      console.log(
+        JSON.stringify({ email, username, password, repeatedPassword }),
+      )
+    "
+  >
+    <h1>Register</h1>
+    <label for="register-email-input">Email</label>
+    <TextInput
+      id="register-email-input"
+      type="email"
+      autocomplete="email"
+      v-model="email"
+    />
+    <label for="register-username-input">Username</label>
+    <TextInput
+      id="register-username-input"
+      autocomplete="username"
+      v-model="username"
+    />
+    <label for="register-password-input">Password</label>
+    <TextInput
+      id="register-password-input"
+      type="password"
+      autocomplete="new-password"
+      v-model="password"
+    />
+    <label for="register-repeat-password-input">Repeat password</label>
+    <TextInput
+      id="register-repeat-password-input"
+      type="password"
+      autocomplete="new-password"
+      v-model="repeatedPassword"
+    />
+    <button type="submit">Register</button>
+  </form>
 </template>
+
+<style scoped>
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+</style>
