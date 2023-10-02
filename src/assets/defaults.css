@@ -1,0 +1,50 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body,
+br,
+li,
+dt,
+dd,
+th,
+td,
+option {
+  margin-block-start: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a,
+a:visited {
+  color: inherit;
+}
+
+#app {
+  isolation: isolate;
+}
