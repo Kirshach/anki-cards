@@ -15,8 +15,8 @@ import { RouterView } from "vue-router";
   z-index: -1;
   top: 0;
   left: 0;
-  width: 100lvw;
-  height: 100lvh;
+  width: 100%;
+  height: 100%;
   background-color: var(--theme-color-3);
 }
 
@@ -27,18 +27,18 @@ import { RouterView } from "vue-router";
 }
 
 .circle.second {
-  width: 145lvw;
-  height: 210lvh;
+  width: 145%;
+  height: 210%;
   background-color: var(--theme-color-2);
-  bottom: -100lvh;
-  right: -70lvw;
+  bottom: -100%;
+  right: -70%;
 }
 
 .circle.first {
-  width: 85lvw;
-  height: 160lvh;
+  width: 85%;
+  height: 160%;
   background-color: var(--theme-color-1);
-  bottom: -110lvh;
-  right: -50lvw;
+  bottom: -110%;
+  right: -50%;
 }
 </style>

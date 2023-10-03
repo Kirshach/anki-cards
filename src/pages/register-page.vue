@@ -49,11 +49,17 @@ const repeatedPassword = ref("");
 </template>
 
 <style scoped>
+h1 {
+  margin-bottom: 2em;
+}
+
 form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 2em;
+  padding-bottom: 2em;
   min-height: 100%;
 }
 </style>
