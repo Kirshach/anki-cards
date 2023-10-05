@@ -1,4 +1,19 @@
+@font-face {
+  font-family: "Kumbh Sans";
+  src: url("./fonts/kumbh-sans/kumbh-sans.ttf");
+  font-weight: 125 950;
+  font-stretch: 75% 125%;
+  font-style: normal;
+}
+
 #app {
   min-width: 320px;
   color: var(--text-color);
+  font-family: "Kumbh Sans", sans-serif;
+  font-variation-settings:
+    "wght" 700,
+    "YOPQ" 100;
+}
+
+h1 {
 }
