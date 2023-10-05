@@ -50,6 +50,7 @@ const repeatedPassword = ref("");
 
 <style scoped>
 h1 {
+  align-self: center;
   margin-bottom: 2em;
 }
 
@@ -57,9 +58,25 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  margin: 0 auto;
   padding-top: 2em;
   padding-bottom: 2em;
   min-height: 100%;
+  width: fit-content;
+}
+
+label {
+  margin-bottom: 0.2225em;
+  margin-left: 1em;
+}
+
+input {
+  margin-bottom: 0.75em;
+}
+
+button[type="submit"] {
+  margin-top: 2em;
+  align-self: center;
 }
 </style>

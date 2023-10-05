@@ -1,4 +1,5 @@
 :root {
+  --body-font-family: "Kumbh Sans", sans-serif;
   /* Colors */
   --theme-color-1: oklch(65.05% 0.19 251.03);
   --theme-color-2: oklch(46.05% 0.19 251.03);

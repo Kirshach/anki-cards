@@ -9,11 +9,19 @@
 #app {
   min-width: 320px;
   color: var(--text-color);
-  font-family: "Kumbh Sans", sans-serif;
+  font-family: var(--body-font-family);
   font-variation-settings:
-    "wght" 700,
-    "YOPQ" 100;
+    "wght" 600,
+    "YOPQ" 200;
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-variation-settings:
+    "wght" 700,
+    "YOPQ" 150;
 }
