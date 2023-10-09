@@ -1,5 +1,16 @@
+<script lang="ts" setup>
+defineProps(["modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
+
+const handleInput = (e: Event) => {
+  if (!(e.target instanceof HTMLInputElement))
+    throw new Error("Invalid handleInput handler event target");
+  emit("update:modelValue", e.target?.value);
+};
+</script>
+
 <template>
-  <input type="text" />
+  <input type="text" :value="modelValue" @input="handleInput" />
 </template>
 
 <style scoped>
