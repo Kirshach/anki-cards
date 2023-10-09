@@ -25,3 +25,16 @@ h6 {
     "wght" 700,
     "YOPQ" 150;
 }
+
+input,
+button {
+  outline: 3px solid transparent;
+  outline-offset: 2px;
+  transition: outline 0.2s ease-out;
+}
+
+input:focus,
+button:focus {
+  outline: 3px solid var(--theme-color-accent);
+  transition: outline 0.1s ease-in-out;
+}

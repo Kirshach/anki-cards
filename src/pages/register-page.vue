@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import TextInput from "@/shared/text-input";
+import CustomButton from "@/shared/custom-button";
 
 const email = ref("");
 const username = ref("");
@@ -44,14 +45,14 @@ const repeatedPassword = ref("");
       autocomplete="new-password"
       v-model="repeatedPassword"
     />
-    <button type="submit">Register</button>
+    <CustomButton type="submit">Submit</CustomButton>
   </form>
 </template>
 
 <style scoped>
 h1 {
   align-self: center;
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
 }
 
 form {
@@ -67,12 +68,12 @@ form {
 }
 
 label {
-  margin-bottom: 0.2225em;
+  margin-bottom: 0.5em;
   margin-left: 1em;
 }
 
 input {
-  margin-bottom: 0.75em;
+  margin-bottom: 1em;
 }
 
 button[type="submit"] {
