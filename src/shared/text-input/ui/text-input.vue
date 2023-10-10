@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-defineProps(["modelValue"]);
-const emit = defineEmits(["update:modelValue"]);
+defineProps<{ modelValue: string }>();
+const emit = defineEmits<{
+  "update:modelValue": [value: string];
+}>();
 
 const handleInput = (e: Event) => {
   if (!(e.target instanceof HTMLInputElement))
