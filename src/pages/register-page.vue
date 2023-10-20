@@ -74,6 +74,7 @@ label {
 
 input {
   margin-bottom: 1em;
+  width: 17em;
 }
 
 button[type="submit"] {
