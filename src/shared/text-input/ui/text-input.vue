@@ -21,5 +21,18 @@ input {
   border: 5px solid var(--theme-color-2);
   border-radius: 10em;
   font-size: 1rem;
+  transition: border-color 0.2s ease-in-out;
+}
+
+input:user-invalid {
+  border-color: var(--error-color);
+  transition: border-color 0.2s ease-in-out;
+}
+
+@supports not selector(:user-invalid) {
+  input:invalid {
+    border-color: var(--error-color);
+    transition: border-color 0.2s ease-out;
+  }
 }
 </style>

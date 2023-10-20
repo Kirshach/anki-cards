@@ -24,12 +24,14 @@ const repeatedPassword = ref("");
       type="email"
       autocomplete="email"
       v-model="email"
+      required
     />
     <label for="register-username-input">Username</label>
     <TextInput
       id="register-username-input"
       autocomplete="username"
       v-model="username"
+      required
     />
     <label for="register-password-input">Password</label>
     <TextInput
@@ -37,6 +39,11 @@ const repeatedPassword = ref("");
       type="password"
       autocomplete="new-password"
       v-model="password"
+      pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$"
+      minlength="7"
+      maxlength="15"
+      title="Should contain at least one uppercase letter, one lowercase letter and one number"
+      required
     />
     <label for="register-repeat-password-input">Repeat password</label>
     <TextInput
@@ -44,6 +51,10 @@ const repeatedPassword = ref("");
       type="password"
       autocomplete="new-password"
       v-model="repeatedPassword"
+      pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$"
+      minlength="7"
+      maxlength="15"
+      required
     />
     <CustomButton type="submit">Submit</CustomButton>
   </form>

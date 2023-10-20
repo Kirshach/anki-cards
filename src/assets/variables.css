@@ -5,6 +5,7 @@
   --theme-color-2: oklch(46.05% 0.19 251.03);
   --theme-color-3: oklch(23.05% 0.187 251.03);
   --theme-color-accent: oklch(88% 0.17 250);
+  --error-color: oklch(60% 0.2228 26.01);
 
   --text-color: oklch(100% 0 0);
 
