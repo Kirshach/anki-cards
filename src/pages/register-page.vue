@@ -2,21 +2,34 @@
 import { ref } from "vue";
 import TextInput from "@/shared/text-input";
 import CustomButton from "@/shared/custom-button";
+import { useFetch } from "@/shared/use-fetch";
 
 const email = ref("");
 const username = ref("");
 const password = ref("");
 const repeatedPassword = ref("");
+
+const handleSubmit = async () => {
+  // TODO: move URL to env, abstract content-type away
+  // TODO: also, this is NOT a composable, this should be just a utility function
+  const url = "http://81.31.244.30:8000/api/v1/user/";
+  const res = useFetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      email: email.value,
+      username: username.value,
+      password: password.value,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res);
+};
 </script>
 
 <template>
-  <form
-    @submit.prevent="
-      console.log(
-        JSON.stringify({ email, username, password, repeatedPassword }),
-      )
-    "
-  >
+  <form @submit.prevent="handleSubmit">
     <h1>Register</h1>
     <label for="register-email-input">Email</label>
     <TextInput
