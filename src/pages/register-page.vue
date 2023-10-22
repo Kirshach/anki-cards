@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import TextInput from "@/shared/text-input";
 import CustomButton from "@/shared/custom-button";
-import { useFetch } from "@/shared/use-fetch";
+import { fetchData } from "@/shared/fetch-data";
 
 const email = ref("");
 const username = ref("");
@@ -10,19 +10,11 @@ const password = ref("");
 const repeatedPassword = ref("");
 
 const handleSubmit = async () => {
-  // TODO: move URL to env, abstract content-type away
-  // TODO: also, this is NOT a composable, this should be just a utility function
-  const url = "http://81.31.244.30:8000/api/v1/user/";
-  const res = useFetch(url, {
-    method: "POST",
-    body: JSON.stringify({
-      email: email.value,
-      username: username.value,
-      password: password.value,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
+  const url = "/api/v1/user/registrate_user/";
+  const res = fetchData.post(url, {
+    email: email.value,
+    username: username.value,
+    password: password.value,
   });
   console.log(res);
 };
@@ -106,3 +98,4 @@ button[type="submit"] {
   align-self: center;
 }
 </style>
+@/shared/fetch-data
