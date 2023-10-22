@@ -10,5 +10,6 @@ The hottest project in the universe
 
 ### Steps
 
+- copy `.env.example` to `.env`
 - `npm install`
 - `npm run dev`

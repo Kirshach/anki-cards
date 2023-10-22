@@ -10,7 +10,7 @@ const handleResponse = async (response: Response) => {
 };
 
 // TODO: move URL to env, abstract content-type away
-const buildUrl = (url: string) => `http://81.31.244.30:8000/${url}`;
+const buildUrl = (url: string) => `${import.meta.env.VITE_BASE_API_URL}${url}`;
 
 export const fetchData = {
   get: async (url: string) =>
