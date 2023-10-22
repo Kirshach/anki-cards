@@ -28,15 +28,18 @@ const handleSubmit = async () => {
     .then(() => alert("success"))
     .catch((error: unknown) => {
       if ("email" in (error as Record<"email", string[]>)) {
-        emailError.value = "Error: " + (error as Record<string, unknown>).email;
+        emailError.value =
+          "Error: " + (error as Record<"email", string[]>).email.join("; ");
       }
       if ("username" in (error as Record<"username", string[]>)) {
         usernameError.value =
-          "Error: " + (error as Record<string, unknown>).username;
+          "Error: " +
+          (error as Record<"username", string[]>).username.join("; ");
       }
       if ("password" in (error as Record<"password", string[]>)) {
         passwordError.value =
-          "Error: " + (error as Record<string, unknown>).password;
+          "Error: " +
+          (error as Record<"password", string[]>).password.join("; ");
       }
     });
 };
