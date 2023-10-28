@@ -24,15 +24,8 @@ input {
   transition: border-color 0.2s ease-in-out;
 }
 
-input:user-invalid {
+input.error {
   border-color: var(--error-color);
   transition: border-color 0.2s ease-in-out;
-}
-
-@supports not selector(:user-invalid) {
-  input:invalid {
-    border-color: var(--error-color);
-    transition: border-color 0.2s ease-out;
-  }
 }
 </style>

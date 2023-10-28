@@ -30,7 +30,7 @@ const passwordError = ref<string | null>(null);
 const repeatedPasswordError = ref<string | null>(null);
 
 const handleSubmit = async () => {
-  const url = "/api/v1/user/registrate_user/";
+  const url = "api/v1/user/registrate_user/";
   const res = fetchData.post(url, {
     email: email.value,
     username: username.value,
@@ -112,6 +112,7 @@ onMounted(() => {
       @blur.once="(emailHasBeenBlurred = true) && validateEmail()"
       @input="emailHasBeenBlurred ? validateEmail() : noop()"
       :aria-invalid="emailError !== null"
+      :class="emailError && 'error'"
       aria-describedby="register-form-email-error"
       required
     />
@@ -126,6 +127,7 @@ onMounted(() => {
       @blur.once="(usernameHasBeenBlurred = true) && validateUsername()"
       @input="usernameHasBeenBlurred ? validateUsername() : noop()"
       :aria-invalid="usernameError !== null"
+      :class="usernameError && 'error'"
       aria-describedby="register-form-username-error"
       required
     />
@@ -147,8 +149,13 @@ onMounted(() => {
       maxlength="20"
       title="Should contain at least one uppercase letter, one lowercase letter and one number"
       :aria-invalid="passwordError !== null"
+      :class="passwordError && 'error'"
       @blur.once="(passwordHasBeenBlurred = true) && validatePassword()"
-      @input="passwordHasBeenBlurred ? validatePassword() : noop()"
+      @input="
+        passwordHasBeenBlurred
+          ? (validatePassword(), validateRepeatedPassword())
+          : noop()
+      "
       aria-describedby="register-form-password-error"
       required
     />
@@ -175,6 +182,7 @@ onMounted(() => {
         repeatedPasswordHasBeenBlurred ? validateRepeatedPassword() : noop()
       "
       :aria-invalid="repeatedPasswordError !== null"
+      :class="repeatedPasswordError && 'error'"
       aria-describedby="register-form-repeated-password-error"
       required
     />
