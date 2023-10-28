@@ -19,6 +19,11 @@ const username = ref("");
 const password = ref("");
 const repeatedPassword = ref("");
 
+const emailHasBeenBlurred = ref(false);
+const usernameHasBeenBlurred = ref(false);
+const passwordHasBeenBlurred = ref(false);
+const repeatedPasswordHasBeenBlurred = ref(false);
+
 const emailError = ref<string | null>(null);
 const usernameError = ref<string | null>(null);
 const passwordError = ref<string | null>(null);
@@ -86,6 +91,7 @@ const validateRepeatedPassword = () => {
       .join(";\n");
   }
 };
+const noop = () => {};
 
 onMounted(() => {
   if (!(form.value instanceof HTMLFormElement))
@@ -103,7 +109,8 @@ onMounted(() => {
       type="email"
       autocomplete="email"
       v-model="email"
-      @blur="validateEmail"
+      @blur.once="(emailHasBeenBlurred = true) && validateEmail()"
+      @input="emailHasBeenBlurred ? validateEmail() : noop()"
       :aria-invalid="emailError !== null"
       aria-describedby="register-form-email-error"
       required
@@ -116,7 +123,8 @@ onMounted(() => {
       id="register-username-input"
       autocomplete="username"
       v-model="username"
-      @blur="validateUsername"
+      @blur.once="(usernameHasBeenBlurred = true) && validateUsername()"
+      @input="usernameHasBeenBlurred ? validateUsername() : noop()"
       :aria-invalid="usernameError !== null"
       aria-describedby="register-form-username-error"
       required
@@ -139,7 +147,8 @@ onMounted(() => {
       maxlength="20"
       title="Should contain at least one uppercase letter, one lowercase letter and one number"
       :aria-invalid="passwordError !== null"
-      @blur="validatePassword"
+      @blur.once="(passwordHasBeenBlurred = true) && validatePassword()"
+      @input="passwordHasBeenBlurred ? validatePassword() : noop()"
       aria-describedby="register-form-password-error"
       required
     />
@@ -159,7 +168,12 @@ onMounted(() => {
       pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$"
       minlength="7"
       maxlength="20"
-      @blur="validateRepeatedPassword"
+      @blur.once="
+        (repeatedPasswordHasBeenBlurred = true) && validateRepeatedPassword()
+      "
+      @input="
+        repeatedPasswordHasBeenBlurred ? validateRepeatedPassword() : noop()
+      "
       :aria-invalid="repeatedPasswordError !== null"
       aria-describedby="register-form-repeated-password-error"
       required
