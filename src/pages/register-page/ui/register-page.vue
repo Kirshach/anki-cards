@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
+import type { ZodError, ZodSchema } from "zod";
 import TextInput from "@/shared/text-input";
 import CustomButton from "@/shared/custom-button";
 import { fetchData } from "@/shared/fetch-data";
+
+import {
+  emailSchema,
+  usernameSchema,
+  passwordSchema,
+  repeatPasswordSchema,
+} from "../model/validators";
 
 const form = ref<HTMLFormElement | null>(null);
 
@@ -44,57 +52,46 @@ const handleSubmit = async () => {
     });
 };
 
+const getValidator = (
+  schema: ZodSchema,
+  valueRef: Ref<string>,
+  errorRef: Ref<string | null>,
+) => {
+  return () => {
+    try {
+      schema.parse(valueRef.value);
+      errorRef.value = null;
+    } catch (error) {
+      errorRef.value = (error as ZodError).errors
+        .map((e) => e.message)
+        .join(";\n");
+    }
+  };
+};
+
+const validateEmail = getValidator(emailSchema, email, emailError);
+const validateUsername = getValidator(usernameSchema, username, usernameError);
+const validatePassword = getValidator(passwordSchema, password, passwordError);
+const validateRepeatedPassword = () => {
+  try {
+    repeatPasswordSchema
+      .refine((val) => val === password.value, {
+        message: "Passwords do not match",
+      })
+      .parse(repeatedPassword.value);
+    repeatedPasswordError.value = null;
+  } catch (error) {
+    repeatedPasswordError.value = (error as ZodError).errors
+      .map((e) => e.message)
+      .join(";\n");
+  }
+};
+
 onMounted(() => {
   if (!(form.value instanceof HTMLFormElement))
     throw new Error("Invalid form ref value");
   form.value.setAttribute("novalidate", "");
 });
-
-const validateEmail = () => {
-  if (email.value.length === 0) {
-    emailError.value = "Email is required";
-  } else if (email.value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/) === null) {
-    emailError.value =
-      'Invalid email format:\n email should contain "@" symbol and domain name';
-  } else {
-    emailError.value = null;
-  }
-};
-
-const validateUsername = () => {
-  if (username.value.length === 0) {
-    usernameError.value = "Username is required";
-  } else {
-    usernameError.value = null;
-  }
-};
-
-const validatePassword = () => {
-  if (password.value.length === 0) {
-    passwordError.value = "Password is required";
-  } else if (
-    password.value.match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/) === null
-  ) {
-    passwordError.value =
-      "Password should contain at least one uppercase letter, one lowercase letter and one number";
-  } else if (password.value.length < 7) {
-    passwordError.value = "Password should be at least 7 characters long";
-  } else if (password.value.length > 20) {
-    passwordError.value = "Password should be at most 20 characters long";
-  } else {
-    passwordError.value = null;
-  }
-};
-
-const validateRepeatedPassword = () => {
-  if (repeatedPassword.value.length === 0) {
-    repeatedPasswordError.value = "Repeated password is required";
-  } else if (repeatedPassword.value !== password.value) {
-    repeatedPasswordError.value = "Passwords do not match";
-  } else {
-    repeatedPasswordError.value = null;
-  }
-};
 </script>
 
 <template>
