@@ -31,7 +31,7 @@ export const passwordSchema = z
       "Password should contain at least one number, one lowercase and one uppercase letter",
   });
 
-export const repeatPasswordSchema = z
+export const repeatedPasswordSchema = z
   .string({
     required_error: "Repeated password is required",
   })

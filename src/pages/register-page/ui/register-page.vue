@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { reactive, ref } from "vue";
 import type { ZodError, ZodSchema } from "zod";
 
 import TextInput from "@/shared/text-input";
@@ -10,57 +10,61 @@ import {
   emailSchema,
   usernameSchema,
   passwordSchema,
-  repeatPasswordSchema,
+  repeatedPasswordSchema,
 } from "../model/validators";
 
 const form = ref<HTMLFormElement | null>(null);
 const isSubmitting = ref(false);
 
-const email = ref("");
-const username = ref("");
-const password = ref("");
-const repeatedPassword = ref("");
+type FormField = {
+  value: string;
+  error: string | null;
+  blurred: boolean;
+};
 
-const emailHasBeenBlurred = ref(false);
-const usernameHasBeenBlurred = ref(false);
-const passwordHasBeenBlurred = ref(false);
-const repeatedPasswordHasBeenBlurred = ref(false);
+const email = reactive<FormField>({ value: "", error: null, blurred: false });
+const username = reactive<FormField>({
+  value: "",
+  error: null,
+  blurred: false,
+});
+const password = reactive<FormField>({
+  value: "",
+  error: null,
+  blurred: false,
+});
+const repeatedPassword = reactive<FormField>({
+  value: "",
+  error: null,
+  blurred: false,
+});
 
-const emailError = ref<string | null>(null);
-const usernameError = ref<string | null>(null);
-const passwordError = ref<string | null>(null);
-const repeatedPasswordError = ref<string | null>(null);
-
-const getValidator = (
-  schema: ZodSchema,
-  valueRef: Ref<string>,
-  errorRef: Ref<string | null>,
-) => {
+const getValidator = (schema: ZodSchema, fieldObject: FormField) => {
   return () => {
     try {
-      schema.parse(valueRef.value);
-      errorRef.value = null;
+      schema.parse(fieldObject.value);
+      fieldObject.error = null;
     } catch (error) {
-      errorRef.value = (error as ZodError).errors
+      fieldObject.error = (error as ZodError).errors
         .map((e) => e.message)
         .join(";\n");
     }
   };
 };
 
-const validateEmail = getValidator(emailSchema, email, emailError);
-const validateUsername = getValidator(usernameSchema, username, usernameError);
-const validatePassword = getValidator(passwordSchema, password, passwordError);
+const validateEmail = getValidator(emailSchema, email);
+const validateUsername = getValidator(usernameSchema, username);
+const validatePassword = getValidator(passwordSchema, password);
 const validateRepeatedPassword = () => {
   try {
-    repeatPasswordSchema
+    repeatedPasswordSchema
       .refine((val) => val === password.value, {
         message: "Passwords do not match",
       })
       .parse(repeatedPassword.value);
-    repeatedPasswordError.value = null;
+    repeatedPassword.error = null;
   } catch (error) {
-    repeatedPasswordError.value = (error as ZodError).errors
+    repeatedPassword.error = (error as ZodError).errors
       .map((e) => e.message)
       .join(";\n");
   }
@@ -82,16 +86,16 @@ const handleSubmit = async () => {
     .then(() => alert("success"))
     .catch((error: unknown) => {
       if ("email" in (error as Record<"email", string[]>)) {
-        emailError.value =
+        email.error =
           "Error: " + (error as Record<"email", string[]>).email.join("; ");
       }
       if ("username" in (error as Record<"username", string[]>)) {
-        usernameError.value =
+        username.error =
           "Error: " +
           (error as Record<"username", string[]>).username.join("; ");
       }
       if ("password" in (error as Record<"password", string[]>)) {
-        passwordError.value =
+        password.error =
           "Error: " +
           (error as Record<"password", string[]>).password.join("; ");
       }
@@ -115,51 +119,55 @@ const handleSubmit = async () => {
       id="register-email-input"
       type="email"
       autocomplete="email"
-      v-model="email"
-      @blur.once="(emailHasBeenBlurred = true), validateEmail()"
-      @input="emailHasBeenBlurred ? validateEmail() : noop()"
-      :aria-invalid="emailError !== null"
-      :class="emailError && 'error'"
+      v-model="email.value"
+      @blur.once="(email.blurred = true), validateEmail()"
+      @input="email.blurred ? validateEmail() : noop()"
+      :aria-invalid="email.error !== null"
+      :class="email.error && 'error'"
       aria-describedby="register-form-email-error"
       required
     />
-    <div class="error-message" id="register-form-email-error" v-if="emailError">
-      {{ emailError }}
+    <div
+      class="error-message"
+      id="register-form-email-error"
+      v-if="email.error"
+    >
+      {{ email.error }}
     </div>
     <label for="register-username-input">Username</label>
     <TextInput
       id="register-username-input"
       autocomplete="username"
-      v-model="username"
-      @blur.once="(usernameHasBeenBlurred = true), validateUsername()"
-      @input="usernameHasBeenBlurred ? validateUsername() : noop()"
-      :aria-invalid="usernameError !== null"
-      :class="usernameError && 'error'"
+      v-model="username.value"
+      @blur.once="(username.blurred = true), validateUsername()"
+      @input="username.blurred ? validateUsername() : noop()"
+      :aria-invalid="username.error !== null"
+      :class="username.error && 'error'"
       aria-describedby="register-form-username-error"
       required
     />
     <div
       class="error-message"
       id="register-form-username-error"
-      v-if="usernameError"
+      v-if="username.error"
     >
-      {{ usernameError }}
+      {{ username.error }}
     </div>
     <label for="register-password-input">Password</label>
     <TextInput
       id="register-password-input"
       type="password"
       autocomplete="new-password"
-      v-model="password"
+      v-model="password.value"
       pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$"
       minlength="7"
       maxlength="20"
       title="Should contain at least one uppercase letter, one lowercase letter and one number"
-      :aria-invalid="passwordError !== null"
-      :class="passwordError && 'error'"
-      @blur.once="(passwordHasBeenBlurred = true), validatePassword()"
+      :aria-invalid="password.error !== null"
+      :class="password.error && 'error'"
+      @blur.once="(password.blurred = true), validatePassword()"
       @input="
-        passwordHasBeenBlurred
+        password.blurred
           ? (validatePassword(), validateRepeatedPassword())
           : noop()
       "
@@ -169,36 +177,32 @@ const handleSubmit = async () => {
     <div
       class="error-message"
       id="register-form-password-error"
-      v-if="passwordError"
+      v-if="password.error"
     >
-      {{ passwordError }}
+      {{ password.error }}
     </div>
     <label for="register-repeat-password-input">Repeat password</label>
     <TextInput
       id="register-repeat-password-input"
       type="password"
       autocomplete="new-password"
-      v-model="repeatedPassword"
+      v-model="repeatedPassword.value"
       pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$"
       minlength="7"
       maxlength="20"
-      @blur.once="
-        (repeatedPasswordHasBeenBlurred = true), validateRepeatedPassword()
-      "
-      @input="
-        repeatedPasswordHasBeenBlurred ? validateRepeatedPassword() : noop()
-      "
-      :aria-invalid="repeatedPasswordError !== null"
-      :class="repeatedPasswordError && 'error'"
+      @blur.once="(repeatedPassword.blurred = true), validateRepeatedPassword()"
+      @input="repeatedPassword.blurred ? validateRepeatedPassword() : noop()"
+      :aria-invalid="repeatedPassword.error !== null"
+      :class="repeatedPassword.error && 'error'"
       aria-describedby="register-form-repeated-password-error"
       required
     />
     <div
       class="error-message"
       id="register-form-repeated-password-error"
-      v-if="repeatedPasswordError"
+      v-if="repeatedPassword.error"
     >
-      {{ repeatedPasswordError }}
+      {{ repeatedPassword.error }}
     </div>
   </CenteredForm>
 </template>
