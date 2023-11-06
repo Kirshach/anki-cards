@@ -13,6 +13,11 @@ const router = createRouter({
       name: "register",
       component: () => import("../pages/register-page"),
     },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("../pages/login-page"),
+    },
   ],
 });
 

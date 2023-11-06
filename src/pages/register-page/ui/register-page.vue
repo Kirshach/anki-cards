@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import type { ZodError, ZodSchema } from "zod";
+
 import TextInput from "@/shared/text-input";
-import CustomButton from "@/shared/custom-button";
+import CenteredForm from "@/shared/centered-form";
 import { fetchData } from "@/shared/fetch-data";
 
 import {
@@ -13,6 +14,7 @@ import {
 } from "../model/validators";
 
 const form = ref<HTMLFormElement | null>(null);
+const isSubmitting = ref(false);
 
 const email = ref("");
 const username = ref("");
@@ -28,34 +30,6 @@ const emailError = ref<string | null>(null);
 const usernameError = ref<string | null>(null);
 const passwordError = ref<string | null>(null);
 const repeatedPasswordError = ref<string | null>(null);
-
-const handleSubmit = async () => {
-  const url = "api/v1/user/registrate_user/";
-  const res = fetchData.post(url, {
-    email: email.value,
-    username: username.value,
-    password: password.value,
-  });
-
-  res
-    .then(() => alert("success"))
-    .catch((error: unknown) => {
-      if ("email" in (error as Record<"email", string[]>)) {
-        emailError.value =
-          "Error: " + (error as Record<"email", string[]>).email.join("; ");
-      }
-      if ("username" in (error as Record<"username", string[]>)) {
-        usernameError.value =
-          "Error: " +
-          (error as Record<"username", string[]>).username.join("; ");
-      }
-      if ("password" in (error as Record<"password", string[]>)) {
-        passwordError.value =
-          "Error: " +
-          (error as Record<"password", string[]>).password.join("; ");
-      }
-    });
-};
 
 const getValidator = (
   schema: ZodSchema,
@@ -91,25 +65,58 @@ const validateRepeatedPassword = () => {
       .join(";\n");
   }
 };
+
 const noop = () => {};
 
-onMounted(() => {
-  if (!(form.value instanceof HTMLFormElement))
-    throw new Error("Invalid form ref value");
-  form.value.setAttribute("novalidate", "");
-});
+const handleSubmit = async () => {
+  const url = "api/v1/user/create_user/";
+  const res = fetchData.post(url, {
+    email: email.value,
+    username: username.value,
+    password: password.value,
+  });
+
+  isSubmitting.value = true;
+
+  res
+    .then(() => alert("success"))
+    .catch((error: unknown) => {
+      if ("email" in (error as Record<"email", string[]>)) {
+        emailError.value =
+          "Error: " + (error as Record<"email", string[]>).email.join("; ");
+      }
+      if ("username" in (error as Record<"username", string[]>)) {
+        usernameError.value =
+          "Error: " +
+          (error as Record<"username", string[]>).username.join("; ");
+      }
+      if ("password" in (error as Record<"password", string[]>)) {
+        passwordError.value =
+          "Error: " +
+          (error as Record<"password", string[]>).password.join("; ");
+      }
+    })
+    .finally(() => {
+      isSubmitting.value = false;
+    });
+};
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit" ref="form">
-    <h1>Register</h1>
+  <CenteredForm
+    title="Register"
+    @submit.prevent="handleSubmit"
+    ref="form"
+    novalidate
+    :isSubmitting="isSubmitting"
+  >
     <label for="register-email-input">Email</label>
     <TextInput
       id="register-email-input"
       type="email"
       autocomplete="email"
       v-model="email"
-      @blur.once="(emailHasBeenBlurred = true) && validateEmail()"
+      @blur.once="(emailHasBeenBlurred = true), validateEmail()"
       @input="emailHasBeenBlurred ? validateEmail() : noop()"
       :aria-invalid="emailError !== null"
       :class="emailError && 'error'"
@@ -124,7 +131,7 @@ onMounted(() => {
       id="register-username-input"
       autocomplete="username"
       v-model="username"
-      @blur.once="(usernameHasBeenBlurred = true) && validateUsername()"
+      @blur.once="(usernameHasBeenBlurred = true), validateUsername()"
       @input="usernameHasBeenBlurred ? validateUsername() : noop()"
       :aria-invalid="usernameError !== null"
       :class="usernameError && 'error'"
@@ -150,7 +157,7 @@ onMounted(() => {
       title="Should contain at least one uppercase letter, one lowercase letter and one number"
       :aria-invalid="passwordError !== null"
       :class="passwordError && 'error'"
-      @blur.once="(passwordHasBeenBlurred = true) && validatePassword()"
+      @blur.once="(passwordHasBeenBlurred = true), validatePassword()"
       @input="
         passwordHasBeenBlurred
           ? (validatePassword(), validateRepeatedPassword())
@@ -176,7 +183,7 @@ onMounted(() => {
       minlength="7"
       maxlength="20"
       @blur.once="
-        (repeatedPasswordHasBeenBlurred = true) && validateRepeatedPassword()
+        (repeatedPasswordHasBeenBlurred = true), validateRepeatedPassword()
       "
       @input="
         repeatedPasswordHasBeenBlurred ? validateRepeatedPassword() : noop()
@@ -193,50 +200,5 @@ onMounted(() => {
     >
       {{ repeatedPasswordError }}
     </div>
-    <CustomButton type="submit">Submit</CustomButton>
-  </form>
+  </CenteredForm>
 </template>
-
-<style scoped>
-h1 {
-  align-self: center;
-  margin-bottom: 1.5em;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin: 0 auto;
-  padding: 2em 3em;
-  min-height: 100%;
-  max-width: 25rem;
-}
-
-label {
-  margin-bottom: 0.5em;
-  margin-left: 1em;
-}
-
-input {
-  margin-bottom: 1em;
-  width: 100%;
-}
-
-button[type="submit"] {
-  margin-top: 2em;
-  align-self: center;
-}
-
-.error-message {
-  text-wrap: pretty;
-  padding: 1em 1.5em;
-  width: 100%;
-  margin-bottom: 1em;
-  background-color: var(--text-color);
-  border-radius: 2em;
-  color: var(--error-color);
-  border: 5px solid var(--error-color);
-}
-</style>
