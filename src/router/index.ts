@@ -1,3 +1,4 @@
+import { cookie } from "@/shared/cookies";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -7,6 +8,14 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: () => import("../pages/home-page.vue"),
+    },
+    {
+      path: "/cards/add",
+      name: "add-cards",
+      component: () => import("../pages/add-cards-page.vue"),
+      meta: {
+        protected: true,
+      },
     },
     {
       path: "/register",
@@ -19,6 +28,14 @@ const router = createRouter({
       component: () => import("../pages/login-page"),
     },
   ],
+});
+
+router.beforeEach((to, _from, next) => {
+  if (to.meta.protected && cookie.get("signed_in") !== "True") {
+    next({ name: "login" });
+  } else {
+    next();
+  }
 });
 
 export default router;
