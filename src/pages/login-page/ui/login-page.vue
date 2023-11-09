@@ -12,7 +12,7 @@ const emailOrUsernameError = ref<string | null>(null);
 const passwordError = ref<string | null>(null);
 
 const handleSubmit = async () => {
-  const url = "api/v1/user/login_user/";
+  const url = "api/v1/user/login/";
   const res = fetchData.post(url, {
     email_or_username: emailOrUsername.value,
     password: password.value,
