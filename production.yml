@@ -8,8 +8,6 @@ services:
         build:
             context: .
             dockerfile: ./Docker/Node/Dockerfile
-        ports:
-        - "8000:8000"
         networks:
           - vue-app-network
         depends_on:
