@@ -9,7 +9,7 @@ services:
             context: .
             dockerfile: ./Docker/Node/Dockerfile
         ports:
-        - "8000:5173"
+        - "80:5173"
         networks:
           - vue-app-network
         command: "npm run dev -- --host 0.0.0.0 --port 5173"
