@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+    vue-app:
+        container_name: vue-app
+        env_file:
+            - .env
+        build:
+            context: .
+            dockerfile: ./Docker/Node/Dockerfile
+        ports:
+        - "5173:5173"
+        networks:
+          - vue-app-network
+        command: "npm run dev -- --host 0.0.0.0 --port 5173"
+
+    vue-app-nginx:
+        env_file:
+          - .env
+        build: 
+            context: .
+            dockerfile: ./Docker/Nginx/Dockerfile
+        ports:
+          - "8080:80"
+          - "443:443" # uncomment on production
+        networks:
+          - vue-app-network
+        depends_on:
+            - vue-app
+        volumes:
+            - .:/app
+            - ${SSL_CERTIFICATE}:/etc/nginx/certs/cert.pem:ro
+            - ${SSL_CERTIFICATE_KEY}:/etc/nginx/certs/key.pem:ro
+
+networks:
+  vue-app-network:
+
+
