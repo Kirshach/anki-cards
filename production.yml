@@ -23,13 +23,13 @@ services:
             context: .
             dockerfile: ./Docker/Nginx/Dockerfile
         ports:
-          - "443:443" # uncomment on production
+          - "443:80" # uncomment on production
         networks:
           - vue-app-network
         volumes:
             - .:/app
-            - ${SSL_CERTIFICATE}:/etc/nginx/certs/cert.pem:ro
-            - ${SSL_CERTIFICATE_KEY}:/etc/nginx/certs/key.pem:ro
+#            - ${SSL_CERTIFICATE}:/etc/nginx/certs/cert.pem:ro
+#            - ${SSL_CERTIFICATE_KEY}:/etc/nginx/certs/key.pem:ro
 
 networks:
   vue-app-network:
