@@ -6,7 +6,7 @@ services:
         env_file:
             - .env
         ports:
-          - "80:80"
+          - "8080:5173"
         build:
             context: .
             dockerfile: ./Docker/Node/Dockerfile
@@ -14,7 +14,7 @@ services:
           - vue-app-network
         depends_on:
             - vue-app-nginx
-#        command: "npm run dev -- --host 0.0.0.0 --port 8000"
+        command: "npm run dev -- --host 0.0.0.0 --port 8000"
 
     vue-app-nginx:
         env_file:
