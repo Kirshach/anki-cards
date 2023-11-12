@@ -6,7 +6,7 @@ services:
         env_file:
             - .env
         ports:
-          - "8080:5173"
+          - "80:80"
         build:
             context: .
             dockerfile: ./Docker/Node/Dockerfile

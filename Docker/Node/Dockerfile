@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-EXPOSE 5173
+EXPOSE 80
 
 RUN npm install
 RUN npm run dev
