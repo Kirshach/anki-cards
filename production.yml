@@ -25,7 +25,7 @@ services:
             context: .
             dockerfile: ./Docker/Nginx/Dockerfile
         ports:
-          - "80:80"
+#          - "80:80"
           - "443:443" # uncomment on production
         networks:
           - vue-app-network
