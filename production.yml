@@ -8,7 +8,7 @@ services:
         ports:
 # открывало такое http://openpycab.webtm.ru:8080/
 #          - "8080:5173"
-          - "8000:5173"
+          - "80:5173"
         build:
             context: .
             dockerfile: ./Docker/Node/Dockerfile
