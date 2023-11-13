@@ -6,6 +6,8 @@ services:
         env_file:
             - .env
         ports:
+# открывало такое http://openpycab.webtm.ru:8080/
+#          - "8080:5173"
           - "8080:5173"
         build:
             context: .
