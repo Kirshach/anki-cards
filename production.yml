@@ -19,6 +19,9 @@ services:
     vue-app-nginx:
         env_file:
           - .env
+        environment:
+          - BACKEND_HOST=${BACKEND_HOST}
+          - BACKEND_PORT=${BACKEND_PORT}
         build: 
             context: .
             dockerfile: ./Docker/Nginx/Dockerfile
