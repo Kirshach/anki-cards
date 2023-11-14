@@ -1,5 +1,8 @@
 FROM nginx:latest
-COPY ./Docker/Nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./Docker/Nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./Docker/Nginx/nginx.conf /etc/nginx/conf.d/nginx.conf
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 80 443
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/entrypoint.sh"]
