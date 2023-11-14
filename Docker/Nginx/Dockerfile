@@ -1,7 +1,6 @@
 FROM nginx:1.25.3
 
 COPY ./Docker/Nginx/nginx.conf /etc/nginx/conf.d/nginx.conf
-RUN chmod +x /entrypoint.sh
 
 COPY .env .env
 
