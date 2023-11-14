@@ -6,8 +6,6 @@ services:
         env_file:
             - .env
         ports:
-# открывало такое http://openpycab.webtm.ru:8080/
-#          - "8080:5173"
           - "5173:5173"
         build:
             context: .
@@ -26,7 +24,7 @@ services:
             dockerfile: ./Docker/Nginx/Dockerfile
         ports:
           - "80:80"
-          - "443:443" # uncomment on production
+          - "443:443"
         networks:
           - vue-app-network
         volumes:
