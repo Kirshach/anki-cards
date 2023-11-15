@@ -29,7 +29,7 @@ services:
           - vue-app-network
         volumes:
             - .:/app
-            - ./Docker/Nginx/templates/:/etc/nginx/templates
+            - ./Docker/Nginx/nginx.conf:/etc/nginx/templates
             - ${SSL_CERTIFICATE}:/etc/nginx/certs/cert.pem:ro
             - ${SSL_CERTIFICATE_KEY}:/etc/nginx/certs/key.pem:ro
 
