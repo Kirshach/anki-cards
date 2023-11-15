@@ -1,13 +1,6 @@
 FROM nginx:1.25.3
 
-# COPY ./Docker/Nginx/nginx.conf /etc/nginx/conf.d/nginx.conf
-# COPY ./Docker/Nginx/nginx.conf /etc/nginx/templates/
-
-# COPY .env .env
-
-# get value from .env and setup for variable
-# ENV BACKEND_HOST="$(grep BACKEND_HOST .env | cut -d '=' -f 2)"
-# ENV BACKEND_PORT="$(grep BACKEND_PORT .env | cut -d '=' -f 2)"
+COPY ./Docker/Nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
