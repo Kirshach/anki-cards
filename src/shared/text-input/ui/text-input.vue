@@ -18,7 +18,7 @@ const handleInput = (e: Event) => {
 <style scoped>
 input {
   padding: 0.75em 1em;
-  border: 5px solid var(--theme-color-2);
+  border: 5px solid var(--primary-color-2);
   border-radius: 10em;
   font-size: 1rem;
   transition: border-color 0.2s ease-in-out;

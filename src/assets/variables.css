@@ -1,11 +1,12 @@
 :root {
   --body-font-family: "Kumbh Sans", sans-serif;
   /* Colors */
-  --theme-color-1: oklch(65.05% 0.19 251.03);
-  --theme-color-2: oklch(46.05% 0.19 251.03);
-  --theme-color-3: oklch(23.05% 0.187 251.03);
+  --primary-chroma-hue: 0.19 251.03;
+  --primary-color-1: oklch(65.05% var(--primary-chroma-hue));
+  --primary-color-2: oklch(46.05% var(--primary-chroma-hue));
+  --primary-color-3: oklch(23.05% var(--primary-chroma-hue));
   --theme-color-accent: oklch(88% 0.17 250);
-  --error-color: oklch(60% 0.2228 26.01);
+  --error-color: oklch(60% 0.223 26);
 
   --text-color: oklch(100% 0 0);
 

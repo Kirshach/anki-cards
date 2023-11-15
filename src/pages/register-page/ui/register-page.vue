@@ -73,7 +73,7 @@ const validateRepeatedPassword = () => {
 const noop = () => {};
 
 const handleSubmit = async () => {
-  const url = "api/v1/user/create";
+  const url = "api/v1/user/create/";
   const res = fetchData.post(url, {
     email: email.value,
     username: username.value,

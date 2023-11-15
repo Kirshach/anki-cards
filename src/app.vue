@@ -17,7 +17,7 @@ import { RouterView } from "vue-router";
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--theme-color-3);
+  background-color: var(--primary-color-3);
 }
 
 .circle {
@@ -29,7 +29,7 @@ import { RouterView } from "vue-router";
 .circle.second {
   width: 145%;
   height: 210%;
-  background-color: var(--theme-color-2);
+  background-color: var(--primary-color-2);
   bottom: -100%;
   right: -70%;
 }
@@ -37,7 +37,7 @@ import { RouterView } from "vue-router";
 .circle.first {
   width: 85%;
   height: 160%;
-  background-color: var(--theme-color-1);
+  background-color: var(--primary-color-1);
   bottom: -110%;
   right: -50%;
 }
