@@ -4,6 +4,14 @@ server {
     return 301 https://openpycab.webtm.ru$request_uri;
 }
 
+#redirect to https
+server {
+    listen 80 default_server;
+    server_name <%= $HOST %>;
+    return 301 https://$host$request_uri;
+}
+
+
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
@@ -12,12 +20,12 @@ server {
     ssl_certificate /etc/nginx/certs/cert.pem;
     ssl_certificate_key /etc/nginx/certs/key.pem;
 
-#    location ~ ^/(api)/(.*)$ {
-#        proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
-#        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-#        proxy_set_header Host $host;
-#        proxy_redirect off;
-#    }
+    location ~ ^/(api)/(.*)$ {
+        proxy_pass http://${BACKEND_HOST}:${BACKEND_PORT};
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
 
     location / {
         proxy_pass http://vue-app:5173;
@@ -29,6 +37,3 @@ server {
         alias /app;
     }
 }
-
-env BACKEND_HOST;
-env BACKEND_PORT;

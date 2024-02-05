@@ -2,14 +2,12 @@ version: "3.8"
 
 services:
     vue-app:
+        image: romashovzimadmitry/image-anki-node
         container_name: vue-app
         env_file:
             - .env
         ports:
           - "5173:5173"
-        build:
-            context: .
-            dockerfile: ./Docker/Node/Dockerfile
         networks:
           - vue-app-network
         depends_on:
@@ -17,14 +15,11 @@ services:
         command: "npm run dev -- --host 0.0.0.0 --port 5173"
 
     vue-app-nginx:
+        image: romashovzimadmitry/image-anki-nginx
         env_file:
           - .env
-        build: 
-            context: .
-            dockerfile: ./Docker/Nginx/Dockerfile
         ports:
-          - "80:80"
-#          - "443:443"
+          - "443:443"
         networks:
           - vue-app-network
         volumes:
@@ -35,5 +30,3 @@ services:
 
 networks:
   vue-app-network:
-
-

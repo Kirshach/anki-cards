@@ -1,0 +1,60 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - docker_creating
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: login dockerhub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Docker/Node/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/image-anki-node
+      
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Docker/Nginx/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/image-anki-nginx
+
+    - name: Copy Docker-yml file
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.OPEN_PYCAB_HOST }}
+        username: root
+        password: ${{ secrets.OPEN_PYCAB_MACHINE_ROOT_PASSWORD }}
+        port: 22
+        source: "production.yml,Docker"
+        target: /home/anki-cards
+
+
+    - name: Download Docker-yml file
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.OPEN_PYCAB_HOST }}
+        username: root
+        password: ${{ secrets.OPEN_PYCAB_MACHINE_ROOT_PASSWORD }}
+        port: 22
+        script: |
+          cd /home/anki-cards
+          docker compose -f production.yml pull
+          env $(cat .env | grep ^[A-Z] | xargs) docker compose -f production.yml up --build -d
+          docker image prune --force
