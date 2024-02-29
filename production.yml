@@ -16,11 +16,9 @@ services:
 
     vue-app-nginx:
         image: romashovzimadmitry/image-anki-nginx
-        env_file:
-          - .env
         environment:
-          - BACKEND_HOST:${BACKEND_HOST}
-          - BACKEND_PORT:${$BACKEND_PORT}
+          - BACKEND_HOST=${BACKEND_HOST}
+          - $BACKEND_PORT=${$BACKEND_PORT}
         ports:
           - "443:443"
         networks:
