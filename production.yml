@@ -7,7 +7,7 @@ services:
         env_file:
             - .env
         ports:
-          - "443:5173"
+          - "5950:5173"
         networks:
           - vue-app-network
         depends_on:
